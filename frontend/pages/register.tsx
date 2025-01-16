@@ -11,9 +11,11 @@ const Register: React.FC = () => {
   const [otp, setOtp] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [otpSent, setOtpSent] = useState<boolean>(false); // To track OTP sent state
+  const [otpSent, setOtpSent] = useState<boolean>(false);
+  const [isOtpVerified, setIsOtpVerified] = useState<boolean>(false); // New state for OTP verification
   const router = useRouter();
 
+  // Function to send OTP
   const handleSendOtp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -21,14 +23,15 @@ const Register: React.FC = () => {
 
     try {
       await axios.post('http://localhost:5000/api/auth/send-otp', { email });
-      setOtpSent(true); // OTP sent, show OTP field
-      setLoading(false);
+      setOtpSent(true); // OTP sent successfully
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to send OTP');
+    } finally {
       setLoading(false);
     }
   };
 
+  // Function to verify OTP
   const handleVerifyOtp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -36,13 +39,15 @@ const Register: React.FC = () => {
 
     try {
       await axios.post('http://localhost:5000/api/auth/verify-otp', { email, otp });
-      setLoading(false);
+      setIsOtpVerified(true); // OTP verified successfully
     } catch (err: any) {
       setError(err.response?.data?.message || 'Invalid OTP');
+    } finally {
       setLoading(false);
     }
   };
 
+  // Function to register user
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
@@ -56,7 +61,7 @@ const Register: React.FC = () => {
 
     try {
       await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
-      router.push('/login'); // Redirect after successful registration
+      router.push('/login');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {
@@ -68,18 +73,18 @@ const Register: React.FC = () => {
     <>
       <Navbar />
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <div className="w-full max-w-md bg-black p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
           {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-          {/* Email and OTP Form */}
-          {!otpSent ? (
+          {/* Step 1: Send OTP */}
+          {!otpSent && (
             <form onSubmit={handleSendOtp}>
               <div className="mb-4">
                 <label className="block text-sm font-medium">Email</label>
                 <input
                   type="email"
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-black px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -93,13 +98,16 @@ const Register: React.FC = () => {
                 {loading ? 'Sending OTP...' : 'Send OTP'}
               </button>
             </form>
-          ) : (
+          )}
+
+          {/* Step 2: Verify OTP */}
+          {otpSent && !isOtpVerified && (
             <form onSubmit={handleVerifyOtp}>
               <div className="mb-4">
                 <label className="block text-sm font-medium">Enter OTP</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border text-black rounded-md focus:ring-2 focus:ring-indigo-500"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   required
@@ -115,14 +123,14 @@ const Register: React.FC = () => {
             </form>
           )}
 
-          {/* User Registration */}
-          {otpSent && otp && (
+          {/* Step 3: Register */}
+          {isOtpVerified && (
             <form onSubmit={handleRegister}>
               <div className="mb-4">
                 <label className="block text-sm font-medium">Name</label>
                 <input
                   type="text"
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-black px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -132,7 +140,7 @@ const Register: React.FC = () => {
                 <label className="block text-sm font-medium">Password</label>
                 <input
                   type="password"
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full text-black px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -142,7 +150,7 @@ const Register: React.FC = () => {
                 <label className="block text-sm font-medium">Confirm Password</label>
                 <input
                   type="password"
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 text-black py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required

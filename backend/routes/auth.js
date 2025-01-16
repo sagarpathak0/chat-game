@@ -41,6 +41,9 @@ router.post("/send-otp", [
     // Generate a random OTP
     const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
 
+    // Store OTP and timestamp
+    otpStore[email] = { otp, timestamp: Date.now() };
+
     // Send OTP to the user's email
     const mailOptions = {
       from: 'your-email@gmail.com',
@@ -54,9 +57,6 @@ router.post("/send-otp", [
         return res.status(500).json({ message: "Failed to send OTP" });
       }
 
-      // Store OTP temporarily (for validation during registration)
-      otpStore[email] = otp;
-
       res.status(200).json({ message: "OTP sent successfully" });
     });
   } catch (error) {
@@ -65,14 +65,28 @@ router.post("/send-otp", [
   }
 });
 
-// Verify OTP
+// Verify OTP with expiry check
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
 
   try {
-    // Validate OTP
-    if (!otp || otp !== otpStore[email]) {
+    // Check if OTP exists for email
+    if (!otpStore[email]) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    const record = otpStore[email];
+
+    // Check if OTP is expired (e.g., 5 minutes expiry)
+    const OTP_EXPIRY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+    if (Date.now() - record.timestamp > OTP_EXPIRY_TIME) {
+      delete otpStore[email]; // Remove expired OTP
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    // Validate OTP
+    if (Number(otp) !== record.otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
     }
 
     // OTP verified, remove OTP from store
