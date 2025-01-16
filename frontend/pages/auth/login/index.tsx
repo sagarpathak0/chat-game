@@ -23,8 +23,10 @@ const Login: React.FC = () => {
 
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token); // Store JWT token
-      router.push('/dashboard'); // Redirect after login
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('name', res.data.name);
+      console.log(res.data);
+      router.push('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     } finally {

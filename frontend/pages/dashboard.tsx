@@ -4,10 +4,13 @@ import Navbar from '@/components/navbar';
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
-  const [user, setUser] = useState<boolean>(true);
+  const [user, setUser] = useState<boolean>(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    if (token) {
+      setUser(true);
+    }
     
     if (!token) {
       setUser(false);
@@ -23,15 +26,19 @@ const Dashboard: React.FC = () => {
     return <div className="p-6 text-center">Redirecting to login...</div>;
   }
 
-  return (
+  if(user){
+    const username = localStorage.getItem('name');
+    return (
     <>
       <Navbar />
       <div className="p-6">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p>Welcome to your dashboard!</p>
+        <p>Hello {username}</p>
       </div>
     </>
   );
+  }
+  
 };
 
 export default Dashboard;
