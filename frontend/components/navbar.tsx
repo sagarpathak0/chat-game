@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove token
     setIsAuthenticated(false); // Update authentication state
-    router.push('/login'); // Redirect to login page
+    router.push('/auth/login'); // Redirect to login page
   };
 
   return (
@@ -81,12 +81,12 @@ const Navbar: React.FC = () => {
           ) : (
             <>
               <li>
-                <Link href="/login" className="hover:text-indigo-600 transition duration-300">
+                <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
                   Login
                 </Link>
               </li>
               <li>
-                <Link href="/register" className="hover:text-indigo-600 transition duration-300">
+                <Link href="/auth/register" className="hover:text-indigo-600 transition duration-300">
                   Register
                 </Link>
               </li>
