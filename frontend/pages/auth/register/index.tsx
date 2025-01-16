@@ -68,7 +68,7 @@ const Register: React.FC = () => {
 
     try {
       await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
-      router.push('/login');
+      router.push('/auth/login');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {
@@ -175,7 +175,7 @@ const Register: React.FC = () => {
 
           <p className="text-sm text-center mt-4">
             Already have an account?{' '}
-            <a href="/login" className="text-indigo-600 hover:underline">
+            <a href="/auth/login" className="text-indigo-600 hover:underline">
               Login
             </a>
           </p>
