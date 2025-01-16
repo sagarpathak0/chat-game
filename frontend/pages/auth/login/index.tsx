@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from '@/components/navbar';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
 const Login: React.FC = () => {
+  const router = useRouter();
+  useEffect(() => {
+      const token = localStorage.getItem('token');
+      
+      if (token) {
+        router.push('/dashboard');
+      }
+    }, [router]);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

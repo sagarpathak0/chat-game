@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Navbar from '@/components/navbar';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
 const Register: React.FC = () => {
+  const router = useRouter();
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        
+        if (token) {
+          router.push('/dashboard');
+        }
+      }, [router]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -13,7 +21,6 @@ const Register: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [otpSent, setOtpSent] = useState<boolean>(false);
   const [isOtpVerified, setIsOtpVerified] = useState<boolean>(false); // New state for OTP verification
-  const router = useRouter();
 
   // Function to send OTP
   const handleSendOtp = async (e: React.FormEvent<HTMLFormElement>) => {

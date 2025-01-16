@@ -1,44 +1,29 @@
-// pages/dashboard.tsx
-import { GetServerSideProps } from 'next';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { parseCookies } from 'nookies';
-import { useAuth } from '@/contexts/AuthContext'; // If you're using context for auth
+import Navbar from '@/components/navbar';
 
-const Dashboard = () => {
-  const { isAuthenticated } = useAuth(); // Assuming you're using context to track auth
+const Dashboard: React.FC = () => {
   const router = useRouter();
 
-  // Client-side redirect if not authenticated
-  if (!isAuthenticated) {
-    router.push('/login');
-    return null; // Do not render the page while redirecting
-  }
+  useEffect(() => {
+    // Check for the token in localStorage
+    const token = localStorage.getItem('token');
+    
+    // If there's no token, redirect the user to the login page
+    if (!token) {
+      router.push('/auth/login');
+    }
+  }, [router]);
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      {/* Your dashboard content */}
-    </div>
+    <>
+      <Navbar />
+      <div className="p-6">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <p>Welcome to your dashboard!</p>
+      </div>
+    </>
   );
-};
-
-// Server-side protection for the dashboard route
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = parseCookies(context);
-  const token = cookies.token; // Assuming the token is stored as 'token'
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
 };
 
 export default Dashboard;
