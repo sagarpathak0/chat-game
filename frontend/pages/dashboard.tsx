@@ -13,7 +13,7 @@ const Dashboard: React.FC = () => {
       setUser(false);
       const timeout = setTimeout(() => {
         router.push('/auth/login');
-      }, 2000);
+      }, 1000);
 
       return () => clearTimeout(timeout);
     }
