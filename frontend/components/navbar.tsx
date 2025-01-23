@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faUser, faPhone, faTag } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart,faHome, faUser, faPhone, faTag, faMoon, faSun, faBars } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '@/context/themeContext';
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const router = useRouter();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   // Check authentication status on component mount
   useEffect(() => {
@@ -22,155 +24,120 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-opacity-30 backdrop-filter backdrop-blur-xl shadow-md">
+    <nav className={`bg-opacity-80 backdrop-filter backdrop-blur-xl shadow-md ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-800'}`}>
       <div className="container mx-auto px-4 flex justify-between items-center py-4">
         {/* Logo */}
-        <div className="text-2xl font-extrabold text-gray-800">
+        <div className="text-2xl font-extrabold">
           <Link href="/" className="hover:text-indigo-600 transition duration-300">
             ShopMate
           </Link>
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex md:space-x-6 text-gray-700 font-medium items-center">
-          <li className="group flex items-center space-x-2">
-            <FontAwesomeIcon
-              icon={faTag}
-              className="h-5 w-5 text-gray-500 group-hover:text-indigo-600 transition duration-300"
-            />
-            <Link href="/products" className="hover:text-indigo-600 transition duration-300">
-              Products
+        <ul className="hidden md:flex md:space-x-6 font-medium items-center">
+          <li>
+            <Link href="/" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faHome} /><span className='ml-2'>Home</span>
             </Link>
           </li>
-          <li className="group flex items-center space-x-2">
-            <FontAwesomeIcon
-              icon={faUser}
-              className="h-5 w-5 text-gray-500 group-hover:text-indigo-600 transition duration-300"
-            />
-            <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
-              Dashboard
+          <li>
+            <Link href="/shop" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Shop</span>
             </Link>
           </li>
-          <li className="group flex items-center space-x-2">
-            <FontAwesomeIcon
-              icon={faPhone}
-              className="h-5 w-5 text-gray-500 group-hover:text-indigo-600 transition duration-300"
-            />
+          <li>
             <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
-              Contact
+              <FontAwesomeIcon icon={faPhone} /><span className='ml-2'>Contact</span>
             </Link>
           </li>
-          <li className="group flex items-center space-x-2">
-            <FontAwesomeIcon
-              icon={faShoppingCart}
-              className="h-5 w-5 text-gray-500 group-hover:text-indigo-600 transition duration-300"
-            />
-            <Link href="/cart" className="hover:text-indigo-600 transition duration-300">
-              Cart
+          <li>
+            <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Dashboard</span>
             </Link>
           </li>
           {isAuthenticated ? (
             <li>
-              <button
-                onClick={handleLogout}
-                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300"
-              >
+              <button onClick={handleLogout} className="hover:text-indigo-600 transition duration-300">
                 Logout
               </button>
             </li>
           ) : (
-            <>
-              <li>
-                <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link href="/auth/register" className="hover:text-indigo-600 transition duration-300">
-                  Register
-                </Link>
-              </li>
-            </>
+            <li>
+              <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
+                Login
+              </Link>
+            </li>
           )}
+          <li>
+            <Link href="/cart" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faShoppingCart} />
+            </Link>
+          </li>
+          <li>
+            <button onClick={toggleTheme} className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
+            </button>
+          </li>
         </ul>
 
-        {/* Mobile Menu Icon */}
+        {/* Mobile Menu Toggle */}
         <div className="md:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="focus:outline-none text-gray-700"
+            className="text-gray-700 focus:outline-none"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            <FontAwesomeIcon icon={faBars} />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white shadow-md">
-          <ul className="flex flex-col space-y-4 py-4 px-4 text-gray-700 font-medium">
-            <li className="flex items-center space-x-2">
-              <FontAwesomeIcon icon={faTag} className="h-5 w-5 text-gray-500" />
-              <Link href="/products" className="hover:text-indigo-600 transition duration-300">
-                Products
+        <ul className="md:hidden flex flex-col space-y-4 font-medium items-center bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md py-4">
+          <li>
+            <Link href="/" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faHome} /><span className='ml-2'>Home</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/shop" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Shop</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faPhone} /><span className='ml-2'>Contact</span>
+            </Link>
+          </li>
+          <li>
+            <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Dashboard</span>
+            </Link>
+          </li>
+          {isAuthenticated ? (
+            <li>
+              <button onClick={handleLogout} className="hover:text-indigo-600 transition duration-300">
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
+                Login
               </Link>
             </li>
-            <li className="flex items-center space-x-2">
-              <FontAwesomeIcon icon={faUser} className="h-5 w-5 text-gray-500" />
-              <Link href="/about" className="hover:text-indigo-600 transition duration-300">
-                About Us
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <FontAwesomeIcon icon={faPhone} className="h-5 w-5 text-gray-500" />
-              <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
-                Contact
-              </Link>
-            </li>
-            <li className="flex items-center space-x-2">
-              <FontAwesomeIcon icon={faShoppingCart} className="h-5 w-5 text-gray-500" />
-              <Link href="/cart" className="hover:text-indigo-600 transition duration-300">
-                Cart
-              </Link>
-            </li>
-            {isAuthenticated ? (
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300"
-                >
-                  Logout
-                </button>
-              </li>
-            ) : (
-              <>
-                <li>
-                  <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/auth/signup" className="hover:text-indigo-600 transition duration-300">
-                    Register
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
+          )}
+          <li>
+            <Link href="/cart" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
+              <FontAwesomeIcon icon={faShoppingCart} />
+            </Link>
+          </li>
+          <li>
+            <button onClick={toggleTheme} className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
+            </button>
+          </li>
+        </ul>
       )}
     </nav>
   );

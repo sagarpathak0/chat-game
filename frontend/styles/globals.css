@@ -18,3 +18,14 @@
 nav {
   transition: background-color 0.3s ease;
 }
+
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+  background-color: #1a202c; /* Dark background color */
+  color: #f7fafc; /* Light text color */
+}
+
+/* Add other dark mode styles as needed */

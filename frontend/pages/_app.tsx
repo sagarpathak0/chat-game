@@ -1,11 +1,14 @@
-// pages/_app.tsx
-import '../styles/globals.css';  // Ensure this line is present
-import { AppProps } from 'next/app'; // Import AppProps from Next.js
+import React from 'react';
+import { AppProps } from 'next/app';
+import { ThemeProvider } from '@/context/themeContext';
+import '@/styles/globals.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
+    <ThemeProvider>
       <Component {...pageProps} />
+    </ThemeProvider>
   );
-}
+};
 
 export default MyApp;
