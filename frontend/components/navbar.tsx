@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-opacity-30 backdrop-filter backdrop-blur-xl shadow-md">
       <div className="container mx-auto px-4 flex justify-between items-center py-4">
         {/* Logo */}
         <div className="text-2xl font-extrabold text-gray-800">
@@ -47,8 +47,8 @@ const Navbar: React.FC = () => {
               icon={faUser}
               className="h-5 w-5 text-gray-500 group-hover:text-indigo-600 transition duration-300"
             />
-            <Link href="/about" className="hover:text-indigo-600 transition duration-300">
-              About Us
+            <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
+              Dashboard
             </Link>
           </li>
           <li className="group flex items-center space-x-2">
@@ -158,12 +158,12 @@ const Navbar: React.FC = () => {
             ) : (
               <>
                 <li>
-                  <Link href="/login" className="hover:text-indigo-600 transition duration-300">
+                  <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
                     Login
                   </Link>
                 </li>
                 <li>
-                  <Link href="/signup" className="hover:text-indigo-600 transition duration-300">
+                  <Link href="/auth/signup" className="hover:text-indigo-600 transition duration-300">
                     Register
                   </Link>
                 </li>
