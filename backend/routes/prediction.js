@@ -37,7 +37,7 @@ router.post("/get-predictions", async (req, res) => {
 
 async function runInference(input) {
     return new Promise((resolve, reject) => {
-        const scriptPath = 'C:/Users/sagar/OneDrive/desktop/dev/ecom/backend/data/predict_emotion.py';
+        const scriptPath = './data/predict_emotion.py'; // Updated to relative path
 
         exec(`python "${scriptPath}" "${input}"`, (error, stdout, stderr) => {
             if (error) {
