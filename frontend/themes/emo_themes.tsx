@@ -1,0 +1,32 @@
+const emotionThemes: Record<string, string> = {
+  admiration: "I admire your dedication.",
+  amusement: "That joke really made me laugh!",
+  anger: "I can't believe this happened!",
+  annoyance: "This is really starting to get on my nerves.",
+  approval: "I think you did a great job!",
+  caring: "I truly care about your well-being.",
+  confusion: "I'm not sure what to make of this.",
+  curiosity: "I wonder what will happen next.",
+  desire: "I really want to achieve my goals.",
+  disappointment: "I expected more from this situation.",
+  disapproval: "I don't think that's the right choice.",
+  disgust: "That was really unpleasant to experience.",
+  embarrassment: "I feel so embarrassed right now.",
+  excitement: "I can't wait for what's coming next!",
+  fear: "I'm scared of what might happen.",
+  gratitude: "I'm so thankful for your help.",
+  grief: "I'm feeling a deep sense of loss.",
+  joy: "I feel a sense of joy when I see you.",
+  love: "I love spending time with you.",
+  nervousness: "I'm feeling a bit anxious about this.",
+  optimism: "I believe things will get better.",
+  pride: "I'm proud of what I've accomplished.",
+  realization: "I just realized something important.",
+  relief: "I'm relieved that everything turned out okay.",
+  remorse: "I regret my actions and wish I could change them.",
+  sadness: "There is a sadness in the air today.",
+  surprise: "I was completely taken by surprise!",
+  neutral: "I'm feeling indifferent about this."
+};
+
+export default emotionThemes;
