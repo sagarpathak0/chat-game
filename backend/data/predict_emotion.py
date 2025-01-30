@@ -9,12 +9,16 @@ import os
 # Suppress TensorFlow logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-# Load model & tokenizer
-model = tf.keras.models.load_model("C:/Users/sagar/OneDrive/desktop/dev/ecom/backend/data/emotion_model.h5")
-with open("C:/Users/sagar/OneDrive/desktop/dev/ecom/backend/data/tokenizer.pkl", "rb") as f:
+# Load model & tokenizer using paths relative to the script's directory
+model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
+model = tf.keras.models.load_model(model_path)
+
+tokenizer_path = os.path.join(os.path.dirname(__file__), "tokenizer.pkl")
+with open(tokenizer_path, "rb") as f:
     tokenizer = pickle.load(f)
 
-with open("C:/Users/sagar/OneDrive/desktop/dev/ecom/backend/data/label_encoder.pkl", "rb") as f:
+label_encoder_path = os.path.join(os.path.dirname(__file__), "label_encoder.pkl")
+with open(label_encoder_path, "rb") as f:
     label_encoder = pickle.load(f)
 
 def predict_emotion(text):
