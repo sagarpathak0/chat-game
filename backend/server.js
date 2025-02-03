@@ -23,6 +23,7 @@ app.use(bodyParser.json());
 // Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/prediction", require("./routes/prediction"));
+app.use("/api/feedback", require("./routes/feedback"));
 
 // Socket.IO server
 const io = new Server(httpServer, {

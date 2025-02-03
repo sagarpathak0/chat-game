@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '@/components/navbar';
-import Loading from './loading';
+import Loading from '../components/loading';
 import { useTheme } from '@/context/themeContext';
 
 const Dashboard: React.FC = () => {

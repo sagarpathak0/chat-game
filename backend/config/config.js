@@ -10,4 +10,5 @@ const pool = new Pool({
 
 console.log("Database connected successfully");
 
+
 module.exports = pool;
