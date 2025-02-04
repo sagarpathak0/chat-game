@@ -35,14 +35,14 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex md:space-x-6 font-medium items-center">
-          <li>
+          {/* <li>
             <Link href="/" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faHome} /><span className='ml-2'>Home</span>
             </Link>
-          </li>
+          </li> */}
           <li>
-            <Link href="/shop" className="hover:text-indigo-600 transition duration-300">
-              <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Shop</span>
+            <Link href="/emotion" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Emotion</span>
             </Link>
           </li>
           <li>

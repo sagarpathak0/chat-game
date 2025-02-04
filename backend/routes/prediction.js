@@ -1,7 +1,6 @@
-// prediction.js
 const express = require("express");
 const dotenv = require("dotenv");
-const { runInference } = require("../utils/inferenceUtils"); // Import the function
+const axios = require("axios"); // Use axios to call the API
 
 dotenv.config();
 
@@ -17,21 +16,15 @@ router.post("/get-predictions", async (req, res) => {
     }
 
     try {
-        const inferenceResponse = await runInference(input);
-        console.log("Inference Response:", inferenceResponse);
+        const response = await axios.post("http://localhost:8080/predict", { text: input }, {
+            headers: { "Content-Type": "application/json" }
+        });
         
-        // Extract only the JSON part from the response
-        const jsonMatch = inferenceResponse.match(/\{.*\}/);
-        if (!jsonMatch) {
-            throw new Error("No valid JSON found in response");
-        }
-        
-        const parsedResponse = JSON.parse(jsonMatch[0]);
-        console.log("Parsed Response:", parsedResponse);
-        res.json(parsedResponse);
+        console.log("Inference Response:", response.data);
+        res.json(response.data);
     } catch (error) {
         console.error("Error during inference:", error);
-        res.status(500).json({ error: error.message || "Internal server error during inference" });
+        res.status(500).json({ error: error.response?.data || "Internal server error during inference" });
     }
 });
 

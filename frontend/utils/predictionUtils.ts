@@ -15,6 +15,39 @@ export async function runPredictions(input: string, setLoad: (load: boolean) => 
     }
 }
 
+// List of possible emotions for "correct_emotion"
+export const emotionOptions = [
+    "admiration",
+    "amusement",
+    "anger",
+    "annoyance",
+    "approval",
+    "caring",
+    "confusion",
+    "curiosity",
+    "desire",
+    "disappointment",
+    "disapproval",
+    "disgust",
+    "embarrassment",
+    "excitement",
+    "fear",
+    "gratitude",
+    "grief",
+    "joy",
+    "love",
+    "nervousness",
+    "optimism",
+    "pride",
+    "realization",
+    "relief",
+    "remorse",
+    "sadness",
+    "surprise",
+    "neutral",
+  ];
+
+
 export async function submitFeedback(input: string, prediction: any, userFeedback: string, correctEmotion: string) {
     // Check if both feedback and correct emotion are selected
     if (userFeedback && correctEmotion) {
@@ -35,3 +68,4 @@ export async function submitFeedback(input: string, prediction: any, userFeedbac
         alert("Please provide feedback and select the correct emotion.");
     }
 }
+
