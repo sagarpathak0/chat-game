@@ -11,7 +11,7 @@ app = Flask(__name__)
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "model")
 
 # Load model & tokenizer
-MODEL_PATH = os.path.join(MODEL_DIR, "emotion_model")
+MODEL_PATH = os.path.join(MODEL_DIR, "emotion_model.keras")
 TOKENIZER_PATH = os.path.join(MODEL_DIR, "tokenizer.pkl")
 LABEL_ENCODER_PATH = os.path.join(MODEL_DIR, "label_encoder.pkl")
 
