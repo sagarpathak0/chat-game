@@ -4,7 +4,7 @@ export async function runPredictions(input: string, setLoad: (load: boolean) => 
     if (input) {
         try {
             setLoad(true);
-            const response = await axios.post('https://chat-game-ten.vercel.app/api/prediction/get-predictions', { input });
+            const response = await axios.post('http://localhost:5000/api/prediction/get-predictions', { input });
             const { emotion, confidence } = response.data;
             setPrediction({ emotion, confidence });
         } catch (error) {
@@ -53,7 +53,7 @@ export async function submitFeedback(input: string, prediction: any, userFeedbac
     if (userFeedback && correctEmotion) {
         try {
             // Send feedback along with the predicted data and correct emotion
-            await axios.post('https://chat-game-ten.vercel.app/api/feedback/feedback', {
+            await axios.post('http://localhost:5000/api/feedback/feedback', {
                 sentence: input,
                 model_prediction: prediction?.emotion,
                 confidence_score: prediction?.confidence,

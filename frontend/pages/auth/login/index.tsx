@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import Navbar from '@/components/navbar';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Login: React.FC = () => {
   const router = useRouter();
@@ -27,8 +28,12 @@ const Login: React.FC = () => {
       localStorage.setItem('name', res.data.name);
       console.log(res.data);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || 'Login failed');
+      } else {
+        setError('Login failed');
+      }
     } finally {
       setLoading(false);
     }
@@ -71,10 +76,10 @@ const Login: React.FC = () => {
             </button>
           </form>
           <p className="text-sm text-center mt-4">
-            Don't have an account?{' '}
-            <a href="/auth/register" className="text-indigo-600 hover:underline">
+            Do not have an account?{' '}
+            <Link href="/auth/register" className="text-indigo-600 hover:underline">
               Register
-            </a>
+            </Link>
           </p>
         </div>
       </div>

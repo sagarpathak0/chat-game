@@ -90,34 +90,34 @@ const CallComponent: React.FC = () => {
         }
     };
 
-    const initializePeerConnection = () => {
-        peerConnectionRef.current = new RTCPeerConnection(config);
+    // const initializePeerConnection = () => {
+    //     peerConnectionRef.current = new RTCPeerConnection(config);
 
-        peerConnectionRef.current.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-            if (event.candidate) {
-                socketRef.current?.emit('sendIceCandidateToSignalingServer', {
-                    didIOffer: true,
-                    iceUserName: 'user1',
-                    iceCandidate: event.candidate,
-                    roomName: joinedRoom
-                });
-            }
-        };
+    //     peerConnectionRef.current.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+    //         if (event.candidate) {
+    //             socketRef.current?.emit('sendIceCandidateToSignalingServer', {
+    //                 didIOffer: true,
+    //                 iceUserName: 'user1',
+    //                 iceCandidate: event.candidate,
+    //                 roomName: joinedRoom
+    //             });
+    //         }
+    //     };
 
-        peerConnectionRef.current.ontrack = (event: RTCTrackEvent) => {
-            if (remoteVideoRef.current) {
-                remoteVideoRef.current.srcObject = event.streams[0];
-            }
-        };
+    //     peerConnectionRef.current.ontrack = (event: RTCTrackEvent) => {
+    //         if (remoteVideoRef.current) {
+    //             remoteVideoRef.current.srcObject = event.streams[0];
+    //         }
+    //     };
 
-        if (localStreamRef.current) {
-            localStreamRef.current.getTracks().forEach(track => {
-                if (localStreamRef.current) {
-                    peerConnectionRef.current?.addTrack(track, localStreamRef.current);
-                }
-            });
-        }
-    };
+    //     if (localStreamRef.current) {
+    //         localStreamRef.current.getTracks().forEach(track => {
+    //             if (localStreamRef.current) {
+    //                 peerConnectionRef.current?.addTrack(track, localStreamRef.current);
+    //             }
+    //         });
+    //     }
+    // };
 
     const answerOffer = (offer: Offer) => {
         if (peerConnectionRef.current) {
@@ -149,7 +149,7 @@ const CallComponent: React.FC = () => {
                 <button onClick={joinRoom}>Join Room</button>
             </div>
 
-            {isRoomCreated && <p>Room '{roomName}' created successfully!</p>}
+            {isRoomCreated && <p>Room {roomName} created successfully!</p>}
             {joinedRoom && <p>Joined Room: {joinedRoom}</p>}
 
             <div>

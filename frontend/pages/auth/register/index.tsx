@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import Navbar from '@/components/navbar';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const Register: React.FC = () => {
   const router = useRouter();
@@ -69,8 +70,12 @@ const Register: React.FC = () => {
     try {
       await axios.post('https://chat-game-ten.vercel.app/api/auth/register', { name, email, password });
       router.push('/auth/login');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data?.message || 'Registration failed');
+      } else {
+        setError('Registration failed');
+      }
     } finally {
       setLoading(false);
     }
@@ -175,9 +180,9 @@ const Register: React.FC = () => {
 
           <p className="text-sm text-center mt-4">
             Already have an account?{' '}
-            <a href="/auth/login" className="text-indigo-600 hover:underline">
+            <Link href="/auth/login" className="text-indigo-600 hover:underline">
               Login
-            </a>
+            </Link>
           </p>
         </div>
       </div>
