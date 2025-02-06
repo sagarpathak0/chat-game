@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <div className="text-2xl font-extrabold">
           <Link href="/" className="hover:text-indigo-600 transition duration-300">
-            ShopMate
+            WhatisMyEmotion
           </Link>
         </div>
 
@@ -45,11 +45,11 @@ const Navbar: React.FC = () => {
               <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Emotion</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faPhone} /><span className='ml-2'>Contact</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Dashboard</span>
@@ -68,11 +68,11 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
           )}
-          <li>
+          {/* <li>
             <Link href="/cart" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faShoppingCart} />
             </Link>
-          </li>
+          </li> */}
           <li>
             <button onClick={toggleTheme} className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
@@ -93,22 +93,22 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <ul className="md:hidden flex flex-col space-y-4 font-medium items-center bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md py-4">
+        <ul className={`md:hidden flex flex-col space-y-4 font-medium items-center ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-800'} bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-md py-4`}>
           <li>
             <Link href="/" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faHome} /><span className='ml-2'>Home</span>
             </Link>
           </li>
           <li>
-            <Link href="/shop" className="hover:text-indigo-600 transition duration-300">
-              <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Shop</span>
+            <Link href="/emotion" className="hover:text-indigo-600 transition duration-300">
+              <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Emotion</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faPhone} /><span className='ml-2'>Contact</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Dashboard</span>
@@ -127,11 +127,11 @@ const Navbar: React.FC = () => {
               </Link>
             </li>
           )}
-          <li>
+          {/* <li>
             <Link href="/cart" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
               <FontAwesomeIcon icon={faShoppingCart} />
             </Link>
-          </li>
+          </li> */}
           <li>
             <button onClick={toggleTheme} className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />

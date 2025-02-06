@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Loading from "../components/loading";
 import Navbar from "../components/navbar";
 import { useTheme } from "../context/themeContext";
@@ -18,6 +19,16 @@ const Emotion: React.FC = () => {
   const [prediction, setPrediction] = useState<PredictionResponse | null>(null);
   const [userFeedback, setUserFeedback] = useState<string>(""); // Automatically determined feedback
   const [correctEmotion, setCorrectEmotion] = useState<string>(""); // Correct emotion selected by user
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth/login");
+    } else {
+      setLoading(false);
+    }
+  }, [router]);
 
   useEffect(() => {
     const inputTimeout = setTimeout(() => {
@@ -25,14 +36,6 @@ const Emotion: React.FC = () => {
     }, 1000);
     return () => clearTimeout(inputTimeout);
   }, [input]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   if (loading) {
     return <Loading />;
@@ -66,7 +69,7 @@ const Emotion: React.FC = () => {
           <h1 className={`text-5xl lg:text-[70px] text-center my-28 md:my-36 lg:my-48 font-bold relative w-[max-content] font-mono before:absolute before:inset-0 before:animate-typewriter  after:absolute after:inset-0 after:w-[0.125em] after:animate-caret ${isDarkMode?"before:bg-gray-900 after:bg-white":"before:bg-gray-100 after:bg-gray-900"} `}>Emotion Analysis</h1>
         </div>
         <p className="mt-4 text-xl font-bold bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
-          Paint My Mood
+          What Is My Mood?
         </p>
         <div className="mt-0">
           <textarea
