@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const pool = require("../config/config");
 const { check, validationResult } = require("express-validator");
+require('dotenv').config();
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',  // Use your email service, like Gmail or SendGrid
   auth: {
     user: 'hardstudy492@gmail.com',
-    pass: 'kqtm ifvo bgdl komk', // Make sure to use an environment variable for security
+    pass: process.env.GMAIL_PASS, // Make sure to use an environment variable for security
   },
 });
 
