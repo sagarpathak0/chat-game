@@ -32,8 +32,12 @@ const Register: React.FC = () => {
     try {
       await axios.post('https://chat-game-ten.vercel.app/api/auth/send-otp', { email });
       setOtpSent(true); // OTP sent successfully
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to send OTP');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data?.message || 'Failed to send OTP');
+      } else {
+        setError('Failed to send OTP');
+      }
     } finally {
       setLoading(false);
     }
@@ -48,8 +52,12 @@ const Register: React.FC = () => {
     try {
       await axios.post('https://chat-game-ten.vercel.app/api/auth/verify-otp', { email, otp });
       setIsOtpVerified(true); // OTP verified successfully
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid OTP');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data?.message || 'Invalid OTP');
+      } else {
+        setError('Invalid OTP');
+      }
     } finally {
       setLoading(false);
     }

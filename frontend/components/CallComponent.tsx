@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-const config = {
-    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-};
+// const config = {
+//     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+// };
 
 type Offer = {
     offererUserName: string;
