@@ -7,9 +7,9 @@ const fs = require('fs');
 const http = require('http');
 const { Server } = require('socket.io');
 
-// SSL certificates
-const key = fs.readFileSync('cert.key');
-const cert = fs.readFileSync('cert.crt');
+// // SSL certificates
+// const key = fs.readFileSync('cert.key');
+// const cert = fs.readFileSync('cert.crt');
 
 dotenv.config();
 
