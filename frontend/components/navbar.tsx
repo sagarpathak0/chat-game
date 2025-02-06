@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart,faHome, faUser, faPhone, faTag, faMoon, faSun, faBars } from '@fortawesome/free-solid-svg-icons';
+import {faHome, faUser, faTag, faMoon, faSun, faBars } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@/context/themeContext';
 
 const Navbar: React.FC = () => {

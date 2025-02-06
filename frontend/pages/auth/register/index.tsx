@@ -33,7 +33,11 @@ const Register: React.FC = () => {
       await axios.post('https://chat-game-ten.vercel.app/api/auth/send-otp', { email });
       setOtpSent(true);
     } catch (err: unknown) {
-      setError('Failed to send OTP');
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data.message || 'Failed to send OTP');
+      } else {
+        setError('Failed to send OTP');
+      }
     } finally {
       setLoading(false);
     }
@@ -48,7 +52,11 @@ const Register: React.FC = () => {
       await axios.post('https://chat-game-ten.vercel.app/api/auth/verify-otp', { email, otp });
       setIsOtpVerified(true);
     } catch (err: unknown) {
-      setError('Invalid OTP');
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data.message || 'Invalid OTP');
+      } else {
+        setError('Invalid OTP');
+      }
     } finally {
       setLoading(false);
     }
@@ -69,7 +77,11 @@ const Register: React.FC = () => {
       await axios.post('https://chat-game-ten.vercel.app/api/auth/register', { name, email, password });
       router.push('/auth/login');
     } catch (err: unknown) {
-      setError('Registration failed');
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data.message || 'Registration failed');
+      } else {
+        setError('Registration failed');
+      }
     } finally {
       setLoading(false);
     }
