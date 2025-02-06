@@ -6,16 +6,18 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 app = Flask(__name__)
+from flask_cors import CORS
+CORS(app)
 
 # Define model directory
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "model")
 
 # Load model & tokenizer
-MODEL_PATH = os.path.join(MODEL_DIR, "emotion_model.keras")
+MODEL_PATH = os.path.join(MODEL_DIR, "emotion_model.h5")
 TOKENIZER_PATH = os.path.join(MODEL_DIR, "tokenizer.pkl")
 LABEL_ENCODER_PATH = os.path.join(MODEL_DIR, "label_encoder.pkl")
 
-model = tf.keras.models.load_model(MODEL_PATH)
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 with open(TOKENIZER_PATH, "rb") as f:
     tokenizer = pickle.load(f)

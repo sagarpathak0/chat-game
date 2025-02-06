@@ -16,7 +16,7 @@ router.post("/get-predictions", async (req, res) => {
     }
 
     try {
-        const response = await axios.post("http://localhost:8080/predict", { text: input }, {
+        const response = await axios.post("http://ec2-13-233-117-28.ap-south-1.compute.amazonaws.com:8080/predict", { text: input }, {
             headers: { "Content-Type": "application/json" }
         });
         
