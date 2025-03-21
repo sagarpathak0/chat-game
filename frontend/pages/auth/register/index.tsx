@@ -184,12 +184,20 @@ const Register: React.FC = () => {
             </form>
           )}
 
-          <p className="text-sm text-center mt-4 text-gray-300">
-            Already have an account?{' '}
-            <Link href="/auth/login" className="text-indigo-600 hover:underline">
-              Login
-            </Link>
-          </p>
+          <div className="mt-4 space-y-2">
+            <p className="text-sm text-center text-gray-300">
+              Already have an account?{' '}
+              <Link href="/auth/login" className="text-indigo-600 hover:underline">
+                Login
+              </Link>
+            </p>
+            <p className="text-sm text-center text-gray-300">
+              Register as an admin?{' '}
+              <Link href="/auth/admin/register" className="text-indigo-600 hover:underline">
+                Admin Registration
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </>

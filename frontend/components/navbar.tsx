@@ -8,19 +8,29 @@ import { useTheme } from '@/context/themeContext';
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const router = useRouter();
   const { isDarkMode, toggleTheme } = useTheme();
 
   // Check authentication status on component mount
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const adminToken = localStorage.getItem('adminToken');
     setIsAuthenticated(!!token); // Set to true if token exists
+    setIsAdmin(!!adminToken); // Set to true if admin token exists
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove token
     setIsAuthenticated(false); // Update authentication state
     router.push('/auth/login'); // Redirect to login page
+  };
+
+  const handleAdminLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminName');
+    setIsAdmin(false);
+    router.push('/auth/admin/login');
   };
 
   return (
@@ -35,44 +45,52 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex md:space-x-6 font-medium items-center">
-          {/* <li>
-            <Link href="/" className="hover:text-indigo-600 transition duration-300">
-              <FontAwesomeIcon icon={faHome} /><span className='ml-2'>Home</span>
-            </Link>
-          </li> */}
           <li>
             <Link href="/emotion" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Emotion</span>
             </Link>
           </li>
-          {/* <li>
-            <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
-              <FontAwesomeIcon icon={faPhone} /><span className='ml-2'>Contact</span>
-            </Link>
-          </li> */}
           <li>
             <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Dashboard</span>
             </Link>
           </li>
-          {isAuthenticated ? (
+          
+          {isAdmin && (
+            <li>
+              <Link href="/admin/dashboard" className="hover:text-indigo-600 transition duration-300">
+                <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Admin Panel</span>
+              </Link>
+            </li>
+          )}
+          
+          {isAdmin ? (
+            <li>
+              <button onClick={handleAdminLogout} className="hover:text-indigo-600 transition duration-300">
+                Admin Logout
+              </button>
+            </li>
+          ) : isAuthenticated ? (
             <li>
               <button onClick={handleLogout} className="hover:text-indigo-600 transition duration-300">
                 Logout
               </button>
             </li>
           ) : (
-            <li>
-              <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
-                Login
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/auth/admin/login" className="hover:text-indigo-600 transition duration-300">
+                  Admin Login
+                </Link>
+              </li>
+            </>
           )}
-          {/* <li>
-            <Link href="/cart" className="hover:text-indigo-600 transition duration-300">
-              <FontAwesomeIcon icon={faShoppingCart} />
-            </Link>
-          </li> */}
+          
           <li>
             <button onClick={toggleTheme} className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
@@ -104,34 +122,47 @@ const Navbar: React.FC = () => {
               <FontAwesomeIcon icon={faTag} /><span className='ml-2'>Emotion</span>
             </Link>
           </li>
-          {/* <li>
-            <Link href="/contact" className="hover:text-indigo-600 transition duration-300">
-              <FontAwesomeIcon icon={faPhone} /><span className='ml-2'>Contact</span>
-            </Link>
-          </li> */}
           <li>
             <Link href="/dashboard" className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Dashboard</span>
             </Link>
           </li>
-          {isAuthenticated ? (
+          
+          {isAdmin && (
+            <li>
+              <Link href="/admin/dashboard" className="hover:text-indigo-600 transition duration-300">
+                <FontAwesomeIcon icon={faUser} /><span className='ml-2'>Admin Panel</span>
+              </Link>
+            </li>
+          )}
+          
+          {isAdmin ? (
+            <li>
+              <button onClick={handleAdminLogout} className="hover:text-indigo-600 transition duration-300">
+                Admin Logout
+              </button>
+            </li>
+          ) : isAuthenticated ? (
             <li>
               <button onClick={handleLogout} className="hover:text-indigo-600 transition duration-300">
                 Logout
               </button>
             </li>
           ) : (
-            <li>
-              <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
-                Login
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link href="/auth/login" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link href="/auth/admin/login" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
+                  Admin Login
+                </Link>
+              </li>
+            </>
           )}
-          {/* <li>
-            <Link href="/cart" className="hover:text-indigo-600 transition duration-300" onClick={() => setIsMobileMenuOpen(false)}>
-              <FontAwesomeIcon icon={faShoppingCart} />
-            </Link>
-          </li> */}
+          
           <li>
             <button onClick={toggleTheme} className="hover:text-indigo-600 transition duration-300">
               <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />

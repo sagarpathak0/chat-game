@@ -23,8 +23,14 @@ const Emotion: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const adminToken = localStorage.getItem("adminToken");
+    
     if (!token) {
       router.push("/auth/login");
+    } else if (adminToken) {
+      // If admin is trying to access user page
+      alert("This page is for regular users only. Redirecting to admin dashboard.");
+      router.push("/admin/dashboard");
     } else {
       setLoading(false);
     }

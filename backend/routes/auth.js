@@ -139,10 +139,66 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user.rows[0].id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.rows[0].id, isAdmin: false }, process.env.JWT_SECRET, { expiresIn: "1h" });
     const name = user.rows[0].name;
 
     res.status(200).json({ message: "Login successful", token, name });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Route: Register Admin
+router.post("/register-admin", [
+  check("email", "Please enter a valid email").isEmail(),
+  check("password", "Password is required").not().isEmpty(),
+], async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const adminExists = await pool.query("SELECT * FROM admin WHERE email = $1", [email]);
+    if (adminExists.rows.length > 0) {
+      return res.status(400).json({ message: "Admin already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query(
+      "INSERT INTO admin (name, email, password) VALUES ($1, $2, $3)",
+      [name, email, hashedPassword]
+    );
+
+    res.status(201).json({ message: "Admin registered successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Route: Login Admin
+router.post("/login-admin", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const admin = await pool.query("SELECT * FROM admin WHERE email = $1", [email]);
+    if (admin.rows.length === 0) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.rows[0].password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign({ id: admin.rows[0].id, isAdmin: true }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const name = admin.rows[0].name;
+
+    res.status(200).json({ message: "Login successful", token, name, isAdmin: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

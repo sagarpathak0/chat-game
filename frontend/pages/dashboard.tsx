@@ -10,19 +10,22 @@ const Dashboard: React.FC = () => {
   const [user, setUser] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const { isDarkMode } = useTheme();
+  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setUser(true);
-      setLoading(false);
+    const adminToken = localStorage.getItem('adminToken');
+    const name = localStorage.getItem('userName');
+    
+    if (!token) {
+      router.push('/auth/login');
+    } else if (adminToken) {
+      // If admin is trying to access user page
+      alert("This page is for regular users only. Redirecting to admin dashboard.");
+      router.push('/admin/dashboard');
     } else {
-      setUser(false);
-      const timeout = setTimeout(() => {
-        router.push("/auth/login");
-      }, 1000);
-
-      return () => clearTimeout(timeout);
+      setUserName(name || 'User');
+      setLoading(false);
     }
   }, [router]);
 
