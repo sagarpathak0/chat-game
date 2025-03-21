@@ -88,7 +88,7 @@ const AdminLogin: React.FC = () => {
           </form>
           <div className="mt-6 space-y-2">
             <p className="text-sm text-center text-gray-700">
-              Don't have an admin account?{' '}
+              Don&apos;t have an admin account?{' '}
               <Link href="/auth/admin/register" className="text-indigo-600 hover:underline">
                 Register
               </Link>

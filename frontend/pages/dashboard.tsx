@@ -7,7 +7,6 @@ import Link from "next/link";
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
-  const [user, setUser] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const { isDarkMode } = useTheme();
   const [userName, setUserName] = useState<string>('');
@@ -15,7 +14,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const adminToken = localStorage.getItem('adminToken');
-    const name = localStorage.getItem('userName');
+    const name = localStorage.getItem('name') || localStorage.getItem('userName') || 'User';
     
     if (!token) {
       router.push('/auth/login');
@@ -24,7 +23,7 @@ const Dashboard: React.FC = () => {
       alert("This page is for regular users only. Redirecting to admin dashboard.");
       router.push('/admin/dashboard');
     } else {
-      setUserName(name || 'User');
+      setUserName(name);
       setLoading(false);
     }
   }, [router]);
@@ -32,12 +31,6 @@ const Dashboard: React.FC = () => {
   if (loading) {
     return <Loading />;
   }
-
-  if (!user) {
-    return <div className="p-6 text-center">Redirecting to login...</div>;
-  }
-
-  const username = localStorage.getItem("name") || "User";
 
   return (
     <>
@@ -54,7 +47,7 @@ const Dashboard: React.FC = () => {
         >
           <h2 className="text-4xl font-bold text-center mb-6">
             Welcome{" "}
-            {username
+            {userName
               .split(" ")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" ")}
