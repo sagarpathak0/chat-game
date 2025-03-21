@@ -109,7 +109,7 @@ export const createPatient = async (req, res) => {
     const { pid, name, age, gender, phone, address, city, email, medications } = req.body;
 
     // Check if patient with same PID already exists
-    const existingPatient = await Patient.findOne({ pid });
+    const existingPatient = await Patient.findOne({ pid }).maxTimeMS(20000); // Increase operation timeout
     if (existingPatient) {
       return res.status(400).json({ message: 'Patient with this ID already exists' });
     }
@@ -135,7 +135,19 @@ export const createPatient = async (req, res) => {
     });
   } catch (error) {
     console.error('Error creating patient:', error);
-    return res.status(500).json({ message: 'Server error' });
+    
+    // Provide more specific error messages based on error type
+    if (error.name === 'MongooseError' && error.message.includes('buffering timed out')) {
+      return res.status(503).json({ 
+        message: 'Database connection timed out. Please try again later.',
+        error: error.message
+      });
+    }
+    
+    return res.status(500).json({ 
+      message: 'Server error', 
+      error: error.message 
+    });
   }
 };
 

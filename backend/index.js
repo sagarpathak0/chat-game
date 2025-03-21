@@ -6,12 +6,17 @@ import pool from "./config/config.js";
 import fs from 'fs';
 import http from 'http';
 import { Server } from 'socket.io';
+import connectDB from './db.js'; // Add MongoDB connection
+import mongoose from 'mongoose'; // Add mongoose import
 import patientRoutes from './routes/patientRoutes.js';
 import authRoutes from "./routes/auth.js";
 import predictionRoutes from "./routes/prediction.js";
 import feedbackRoutes from "./routes/feedback.js";
 
 dotenv.config();
+
+// Connect to MongoDB
+connectDB();
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -25,6 +30,30 @@ app.use('/api/patients', patientRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/prediction", predictionRoutes);
 app.use("/api/feedback", feedbackRoutes);
+
+// Add database health check endpoint
+app.get('/api/health', async (req, res) => {
+  try {
+    // Check MongoDB connection
+    if (mongoose.connection.readyState === 1) {
+      // Check PostgreSQL connection
+      await pool.query('SELECT NOW()');
+      return res.status(200).json({ status: 'healthy', mongodb: 'connected', postgresql: 'connected' });
+    } else {
+      return res.status(503).json({ 
+        status: 'unhealthy', 
+        mongodb: mongoose.STATES[mongoose.connection.readyState], // Convert number to readable state
+        postgresql: 'unknown' 
+      });
+    }
+  } catch (error) {
+    console.error('Health check failed:', error);
+    return res.status(503).json({ 
+      status: 'unhealthy', 
+      error: error.message 
+    });
+  }
+});
 
 // Socket.IO server
 const io = new Server(httpServer, {

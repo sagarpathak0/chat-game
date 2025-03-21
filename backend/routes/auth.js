@@ -1,10 +1,12 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-const pool = require("../config/config");  // Ensure this config is updated to support SSL for Aiven
-const { check, validationResult } = require("express-validator");
-require('dotenv').config();
+import express from "express";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import pool from "../config/config.js"; 
+import { check, validationResult } from "express-validator";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -205,4 +207,4 @@ router.post("/login-admin", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

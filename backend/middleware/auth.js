@@ -1,8 +1,10 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Middleware to verify user token
-exports.verifyUserToken = (req, res, next) => {
+export const verifyUserToken = (req, res, next) => {
   // Get token from header
   const token = req.header('x-auth-token');
 
@@ -28,7 +30,7 @@ exports.verifyUserToken = (req, res, next) => {
 };
 
 // Middleware to verify admin token
-exports.verifyAdminToken = (req, res, next) => {
+export const verifyAdminToken = (req, res, next) => {
   // Get token from header
   const token = req.header('x-auth-token');
 
