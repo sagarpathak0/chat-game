@@ -6,6 +6,7 @@ const pool = require("./config/config");
 const fs = require('fs');
 const http = require('http');
 const { Server } = require('socket.io');
+import patientRoutes from './routes/patientRoutes.js';
 
 // // SSL certificates
 // const key = fs.readFileSync('cert.key');
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
+app.use('/api/patients', patientRoutes);
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/prediction", require("./routes/prediction"));
 app.use("/api/feedback", require("./routes/feedback"));
