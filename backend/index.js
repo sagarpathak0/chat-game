@@ -1,16 +1,15 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
-const pool = require("./config/config");
-const fs = require('fs');
-const http = require('http');
-const { Server } = require('socket.io');
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import pool from "./config/config.js";
+import fs from 'fs';
+import http from 'http';
+import { Server } from 'socket.io';
 import patientRoutes from './routes/patientRoutes.js';
-
-// // SSL certificates
-// const key = fs.readFileSync('cert.key');
-// const cert = fs.readFileSync('cert.crt');
+import authRoutes from "./routes/auth.js";
+import predictionRoutes from "./routes/prediction.js";
+import feedbackRoutes from "./routes/feedback.js";
 
 dotenv.config();
 
@@ -23,9 +22,9 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api/patients', patientRoutes);
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/prediction", require("./routes/prediction"));
-app.use("/api/feedback", require("./routes/feedback"));
+app.use("/api/auth", authRoutes);
+app.use("/api/prediction", predictionRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 // Socket.IO server
 const io = new Server(httpServer, {
